@@ -1,3 +1,8 @@
+using BlogAPI.DB.BlogDB;
+using BlogAPI.DB.BlogDB.IBlogDB;
+using BlogAPI.DB.DBClass;
+using BlogAPI.Services;
+using BlogAPI.Services.IServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,6 +33,21 @@ namespace BlogAPI
 		{
 
 			services.AddControllers();
+
+
+			services.AddSingleton<IDBConnection, DBConnection>();
+
+			#region BlogDB
+			services.AddSingleton<IBlogDB_Menu, BlogDB_Menu>();
+			services.AddSingleton<IBlogDB_Login, BlogDB_Login>();
+			#endregion
+
+			#region Service
+			services.AddSingleton<IMenuService, MenuService>();
+			services.AddSingleton<ILoginService, LoginService>();
+			#endregion
+
+
 			services.AddSwaggerGen(c =>
 			{
 				c.SwaggerDoc("v1", new OpenApiInfo { Title = "BlogAPI", Version = "v1" });
