@@ -9,7 +9,7 @@ namespace BlogAPI.DB.BlogDB
 {
 	public class BlogDB_Menu : IBlogDB_Menu
 	{
-		public string str_conn;
+		private string str_conn;
 
 
 		public BlogDB_Menu(IDBConnection dBConnection)

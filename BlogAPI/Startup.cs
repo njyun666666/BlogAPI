@@ -1,6 +1,8 @@
+using BlogAPI.Common;
 using BlogAPI.DB.BlogDB;
 using BlogAPI.DB.BlogDB.IBlogDB;
 using BlogAPI.DB.DBClass;
+using BlogAPI.Middlewares;
 using BlogAPI.Services;
 using BlogAPI.Services.IServices;
 using Microsoft.AspNetCore.Builder;
@@ -35,16 +37,22 @@ namespace BlogAPI
 			services.AddControllers();
 
 
+
 			services.AddSingleton<IDBConnection, DBConnection>();
 
 			#region BlogDB
 			services.AddSingleton<IBlogDB_Menu, BlogDB_Menu>();
+			services.AddSingleton<IBlogDB_Org, BlogDB_Org>();
 			services.AddSingleton<IBlogDB_Login, BlogDB_Login>();
 			#endregion
+
+			services.AddSingleton<IMyService, MyService>();
 
 			#region Service
 			services.AddSingleton<IMenuService, MenuService>();
 			services.AddSingleton<ILoginService, LoginService>();
+			services.AddSingleton<IGoogleLoginService, GoogleLoginService>();
+			services.AddSingleton<IAuthService, AuthService>();
 			#endregion
 
 
@@ -63,6 +71,16 @@ namespace BlogAPI
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogAPI v1"));
 			}
+
+
+
+
+			app.UseMiddleware<GoogleTokenMiddleware>();
+			app.UseMiddleware<AuthMiddleware>();
+
+
+			app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
 
 			app.UseHttpsRedirection();
 
