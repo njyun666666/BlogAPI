@@ -50,9 +50,9 @@ namespace BlogAPI.Services
 				string payload_decrypt = CommonTool.AESDecrypt(payload_str, _myService.BlogAPI_Key(), iv);
 
 				TokenModel payload = JsonSerializer.Deserialize<TokenModel>(payload_decrypt);
-				
 
-				if (payload.GID != _googleLoginService.GetUser().Subject)
+
+				if (_googleLoginService.GetUser() == null || payload.GID != _googleLoginService.GetUser().Subject)
 				{
 					return null;
 				}

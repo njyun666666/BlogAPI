@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BlogAPI.Filters;
+using BlogAPI.Services.IServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,18 @@ namespace BlogAPI.Controllers
 	[ApiController]
 	public class MenuController : ControllerBase
 	{
-		public MenuController()
-		{
+		private IMenuService _menuService;
 
+		public MenuController(IMenuService menuService)
+		{
+			_menuService = menuService;
 		}
+
+		[HttpGet("{type:int:min(1)}")]
+		public IActionResult MenuGet([FromHeader]string UID, [FromRoute] int type)
+		{
+			return Ok(_menuService.GetMenu(UID, type));
+		}
+
 	}
 }
