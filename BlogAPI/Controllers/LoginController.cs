@@ -1,4 +1,5 @@
-﻿using BlogAPI.Models.Org;
+﻿using BlogAPI.Filters;
+using BlogAPI.Models.Org;
 using BlogAPI.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -64,5 +65,11 @@ namespace BlogAPI.Controllers
 
 		}
 
+		[HttpPost]
+		[TypeFilter(typeof(LoginFilter))]
+		public IActionResult Check()
+		{
+			return Ok();
+		}
 	}
 }
