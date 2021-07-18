@@ -32,7 +32,7 @@ namespace BlogAPI.Controllers
 
 			if (googleuser == null)
 			{
-				return Forbid();
+				return StatusCode(403);
 			}
 
 			// 取得使用者資料
@@ -61,7 +61,7 @@ namespace BlogAPI.Controllers
 			}
 
 
-			return Forbid();
+			return StatusCode(403);
 
 		}
 

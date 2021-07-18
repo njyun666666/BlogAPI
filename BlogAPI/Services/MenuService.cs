@@ -39,7 +39,7 @@ namespace BlogAPI.Services
 
 			targetMenu.ForEach(x =>
 			{
-				if(menus.Where(a => a.ParentID == x.MenuID).Count() > 0)
+				if (menus.Where(a => a.ParentID == x.MenuID).Count() > 0)
 				{
 					x.Children = SetMenu(x.MenuID);
 				}

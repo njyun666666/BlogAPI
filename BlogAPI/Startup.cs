@@ -44,6 +44,7 @@ namespace BlogAPI
 			services.AddSingleton<IBlogDB_Menu, BlogDB_Menu>();
 			services.AddSingleton<IBlogDB_Org, BlogDB_Org>();
 			services.AddSingleton<IBlogDB_Login, BlogDB_Login>();
+			services.AddSingleton<IBlogDB_Auth, BlogDB_Auth>();
 			#endregion
 
 			services.AddSingleton<IMyService, MyService>();

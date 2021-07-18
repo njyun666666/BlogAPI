@@ -11,5 +11,6 @@ namespace BlogAPI.Services.IServices
 		public string CreateToken(string uid, string key);
 		public TokenModel TokenDecrypt(string token);
 		public bool TokenKeyCheck(TokenModel model);
+		public bool Check(string uid, string[] roles);
 	}
 }

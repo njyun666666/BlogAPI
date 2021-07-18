@@ -15,13 +15,15 @@ namespace BlogAPI.Services
 		private readonly IMyService _myService;
 		private IGoogleLoginService _googleLoginService;
 		private IBlogDB_Login db_Login;
+		private IBlogDB_Auth db_Auth;
 
 
-		public AuthService(IMyService myService, IGoogleLoginService googleLoginService, IBlogDB_Login blogDB_Login)
+		public AuthService(IMyService myService, IGoogleLoginService googleLoginService, IBlogDB_Login blogDB_Login, IBlogDB_Auth blogDB_Auth)
 		{
 			_myService = myService;
 			_googleLoginService = googleLoginService;
 			db_Login = blogDB_Login;
+			db_Auth = blogDB_Auth;
 		}
 
 		public string CreateToken(string uid, string key)
@@ -72,5 +74,9 @@ namespace BlogAPI.Services
 			return db_Login.TokenKeyCheck(model.TokenKey, model.UID);
 		}
 
+		public bool Check(string uid, string[] roles)
+		{
+			return db_Auth.Check(uid, roles);
+		}
 	}
 }
