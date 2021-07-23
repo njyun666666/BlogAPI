@@ -45,6 +45,7 @@ namespace BlogAPI
 			services.AddSingleton<IBlogDB_Org, BlogDB_Org>();
 			services.AddSingleton<IBlogDB_Login, BlogDB_Login>();
 			services.AddSingleton<IBlogDB_Auth, BlogDB_Auth>();
+			services.AddSingleton<IBlogDB_Settings, BlogDB_Settings>();
 			#endregion
 
 			services.AddSingleton<IMyService, MyService>();
@@ -54,6 +55,7 @@ namespace BlogAPI
 			services.AddSingleton<ILoginService, LoginService>();
 			services.AddSingleton<IGoogleLoginService, GoogleLoginService>();
 			services.AddSingleton<IAuthService, AuthService>();
+			services.AddSingleton<ISettingsService, SettingsService>();
 			#endregion
 
 
