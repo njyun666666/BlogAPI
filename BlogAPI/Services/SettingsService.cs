@@ -16,13 +16,13 @@ namespace BlogAPI.Services
 			db_Settings = blogDB_Settings;
 		}
 
-		public BlogSettingModel GetBlogSetting(string uid)
+		public async Task<BlogSettingModel> GetBlogSetting(string uid)
 		{
-			return db_Settings.GetBlogSetting(uid);
+			return await db_Settings.GetBlogSetting(uid);
 		}
-		public int Edit(string uid, BlogSettingModel model, string editor)
+		public async Task<int> Edit(string uid, BlogSettingModel model, string editor)
 		{
-			return db_Settings.Edit(uid, model, editor);
+			return await db_Settings.Edit(uid, model, editor);
 		}
 	}
 }

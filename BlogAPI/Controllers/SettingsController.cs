@@ -25,20 +25,20 @@ namespace BlogAPI.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult Get([FromHeader] string UID)
+		public async Task<IActionResult> Get([FromHeader] string UID)
 		{
-			return Ok(_settingService.GetBlogSetting(UID));
+			return Ok(await _settingService.GetBlogSetting(UID));
 		}
 
 		[HttpPost]
-		public IActionResult Edit([FromHeader] string UID, BlogSettingModel model)
+		public async Task<IActionResult> Edit([FromHeader] string UID, BlogSettingModel model)
 		{
 			if (string.IsNullOrWhiteSpace(model.Title))
 			{
 				return Ok(new ParamErrorReturn());
 			}
 
-			if (_settingService.Edit(UID, model, UID) == 0)
+			if (await _settingService.Edit(UID, model, UID) == 0)
 			{
 				return Ok(new FailReturn());
 			}

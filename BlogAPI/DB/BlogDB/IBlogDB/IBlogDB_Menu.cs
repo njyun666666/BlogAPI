@@ -8,6 +8,6 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 {
 	public interface IBlogDB_Menu
 	{
-		public List<MenuModel> GetMenu(string uid, int type);
+		public Task<List<MenuModel>> GetMenu(string uid, int type);
 	}
 }

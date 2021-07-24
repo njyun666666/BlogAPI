@@ -7,7 +7,7 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 {
 	public interface IBlogDB_Login
 	{
-		public int LoginLogAdd(string token, string uid, string ip, Int16 status);
-		public bool TokenKeyCheck(string key, string uid);
+		public Task<int> LoginLogAdd(string key, string uid, string ip, Int16 status);
+		public Task<bool> TokenKeyCheck(string key, string uid);
 	}
 }

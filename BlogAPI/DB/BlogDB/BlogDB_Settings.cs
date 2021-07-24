@@ -19,17 +19,17 @@ namespace BlogAPI.DB.BlogDB
 			str_conn = dBConnection.ConnectionBlogDB();
 		}
 
-		public BlogSettingModel GetBlogSetting(string uid)
+		public async Task<BlogSettingModel> GetBlogSetting(string uid)
 		{
 			string sql = "select * from TB_Blog_Setting where UID=@in_uid";
 
 			DynamicParameters _params = new DynamicParameters();
 			_params.Add("@in_uid", uid, DbType.String, size: 255);
 
-			return SystemDB.SingleQuery<BlogSettingModel>(str_conn, sql, _params);
+			return await SystemDB.SingleQueryAsync<BlogSettingModel>(str_conn, sql, _params);
 		}
 
-		public int Edit(string uid, BlogSettingModel model, string editor)
+		public async Task<int> Edit(string uid, BlogSettingModel model, string editor)
 		{
 			string sql = "UPDATE `TB_Blog_Setting`" +
 						" SET `Title` = @in_title, `Status` = @in_status, `UpdateDate` = now(), `Editor` = @in_editor" +
@@ -41,7 +41,7 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_status", model.Status, DbType.Int16);
 			_params.Add("@in_editor", editor, DbType.String, size: 255);
 
-			return SystemDB.Update(str_conn, sql, _params);
+			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
 		}
 		
 	}

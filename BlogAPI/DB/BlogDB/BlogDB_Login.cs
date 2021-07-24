@@ -20,7 +20,7 @@ namespace BlogAPI.DB.BlogDB
 		}
 
 
-		public int LoginLogAdd(string key, string uid, string ip, Int16 status)
+		public async Task<int> LoginLogAdd(string key, string uid, string ip, Int16 status)
 		{
 			string sql = " INSERT INTO `TB_Login_Log` (`TokenKey`,`UID`,`Date`,`IP`,`Status`)" +
 						" VALUES (@in_key, @in_uid, now(), @in_ip, @in_status);";
@@ -31,10 +31,10 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_ip", ip, DbType.String, size: 255);
 			_params.Add("@in_status", status, DbType.Int16);
 
-			return SystemDB.Insert(str_conn, sql, _params, null, false);
+			return await SystemDB.ExecuteAsync(str_conn, sql, _params, null, false);
 		}
 
-		public bool TokenKeyCheck(string key, string uid)
+		public async Task<bool> TokenKeyCheck(string key, string uid)
 		{
 			string sql = "select exists ("+
 						"  select 1 from TB_Login_Log where `TokenKey`= @in_key and UID = @in_uid and Status = 1" +
@@ -44,7 +44,7 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_key", key, DbType.String, size: 255);
 			_params.Add("@in_uid", uid, DbType.String, size: 255);
 
-			return SystemDB.SingleQuery<bool>(str_conn, sql, _params);
+			return await SystemDB.SingleQueryAsync<bool>(str_conn, sql, _params);
 		}
 
 	}

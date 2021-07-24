@@ -8,7 +8,7 @@ namespace BlogAPI.Services.IServices
 {
 	public interface IMenuService
 	{
-		public List<MenuViewModel> GetMenu(string uid, int type);
+		public Task<List<MenuViewModel>> GetMenu(string uid, int type);
 		public List<MenuViewModel> SetMenu(int parentID);
 	}
 }

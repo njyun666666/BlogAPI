@@ -20,9 +20,9 @@ namespace BlogAPI.Services
 			db_Menu = blogDB_Menu;
 		}
 
-		public List<MenuViewModel> GetMenu(string uid, int type)
+		public async Task<List<MenuViewModel>> GetMenu(string uid, int type)
 		{
-			menus = db_Menu.GetMenu(uid, type);
+			menus = await db_Menu.GetMenu(uid, type);
 			return SetMenu(0);
 		}
 
@@ -39,7 +39,7 @@ namespace BlogAPI.Services
 
 			targetMenu.ForEach(x =>
 			{
-				if (menus.Where(a => a.ParentID == x.MenuID).Count() > 0)
+				if (menus.Where(a => a.ParentID == x.MenuID).Any())
 				{
 					x.Children = SetMenu(x.MenuID);
 				}

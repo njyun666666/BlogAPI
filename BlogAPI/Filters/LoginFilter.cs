@@ -9,23 +9,24 @@ using System.Threading.Tasks;
 
 namespace BlogAPI.Filters
 {
-	public class LoginFilter : ActionFilterAttribute
+	public class LoginFilter : IAsyncActionFilter
     {
 
-        public LoginFilter(IConfiguration config)
+        public LoginFilter()
         {
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            string uid = context.HttpContext.Request.Headers["UID"];
+		public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+		{
+			string uid = context.HttpContext.Request.Headers["UID"];
 
-            if (string.IsNullOrWhiteSpace(uid))
-            {
-                context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
-                return;
-            }
+			if (string.IsNullOrWhiteSpace(uid))
+			{
+				context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
+				return;
+			}
 
-        }
-    }
+			var resultContext = await next();
+		}
+	}
 }

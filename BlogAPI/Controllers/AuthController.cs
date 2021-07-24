@@ -22,9 +22,9 @@ namespace BlogAPI.Controllers
 
 		[HttpPost]
 		[TypeFilter(typeof(LoginFilter))]
-		public IActionResult Check([FromHeader] string UID, AuthCheckModel model)
+		public async Task<IActionResult> Check([FromHeader] string UID, AuthCheckModel model)
 		{
-			if (_authService.Check(UID, new string[] { model.role }))
+			if (await _authService.Check(UID, new string[] { model.role }))
 			{
 				return Ok();
 			}

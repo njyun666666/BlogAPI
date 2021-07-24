@@ -8,7 +8,7 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 {
 	public interface IBlogDB_Settings
 	{
-		public BlogSettingModel GetBlogSetting(string uid);
-		public int Edit(string uid, BlogSettingModel model, string editor);
+		public Task<BlogSettingModel> GetBlogSetting(string uid);
+		public Task<int> Edit(string uid, BlogSettingModel model, string editor);
 	}
 }

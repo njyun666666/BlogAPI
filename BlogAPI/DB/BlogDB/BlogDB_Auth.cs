@@ -20,7 +20,7 @@ namespace BlogAPI.DB.BlogDB
 			str_conn = dBConnection.ConnectionBlogDB();
 		}
 
-		public bool Check(string uid, string[] roles)
+		public async Task<bool> Check(string uid, string[] roles)
 		{
 			string sql = $"select exists( select 1 from TB_Org_Role_User where UID=@in_uid and Status=1 and ID in (@in_roles) )";
 
@@ -28,7 +28,7 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_uid", uid, DbType.String, size: 255);
 			_params.Add("@in_roles", roles);
 
-			return SystemDB.SingleQuery<bool>(str_conn, sql, _params);
+			return await SystemDB.SingleQueryAsync<bool>(str_conn, sql, _params);
 		}
 
 	}

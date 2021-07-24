@@ -30,7 +30,7 @@ namespace BlogAPI.Middlewares
                 {
                     TokenModel model = _authService.TokenDecrypt(token);
 
-                    if (model != null && _authService.TokenKeyCheck(model))
+                    if (model != null && await _authService.TokenKeyCheck(model))
                     {
                         AddHeader(httpContext, "UID", model.UID);
                     }

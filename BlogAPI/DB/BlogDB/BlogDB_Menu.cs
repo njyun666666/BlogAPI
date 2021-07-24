@@ -20,7 +20,7 @@ namespace BlogAPI.DB.BlogDB
 			str_conn = dBConnection.ConnectionBlogDB();
 		}
 
-		public List<MenuModel> GetMenu(string uid, int type)
+		public async Task<List<MenuModel>> GetMenu(string uid, int type)
 		{
 			string sql= " select * from TB_Menu where Type=@in_type and Status=1 and ( AuthType=1 or ( AuthType=2 and MenuID in (" +
 						" 	select MenuID from TB_Auth " +
@@ -32,7 +32,7 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_uid", uid, DbType.String, size: 255);
 			_params.Add("@in_type", type, DbType.Int32);
 
-			return SystemDB.Query<MenuModel>(str_conn, sql, _params);
+			return await SystemDB.QueryAsync<MenuModel>(str_conn, sql, _params);
 		}
 
 

@@ -9,8 +9,8 @@ namespace BlogAPI.Services.IServices
 {
 	public interface ILoginService
 	{
-		public OrgAccountInfoModel AccountInfoGet(string googleID);
-		public OrgAccountInfoModel AccountInfoAdd(GoogleJsonWebSignature.Payload googleUser);
-		public int LoginLogAdd(string uid, string key, string ip);
+		public Task<OrgAccountInfoModel> AccountInfoGet(string googleID);
+		public Task<OrgAccountInfoModel> AccountInfoAdd(GoogleJsonWebSignature.Payload googleUser);
+		public Task<int> LoginLogAdd(string uid, string key, string ip);
 	}
 }

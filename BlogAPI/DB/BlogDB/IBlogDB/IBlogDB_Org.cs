@@ -8,7 +8,7 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 {
 	public interface IBlogDB_Org
 	{
-		public OrgAccountInfoModel AccountInfoGet(string googleID);
-		public int AccountInfoAdd(string uid, string gid, string name, string email, string account, Int16 status);
+		public Task<OrgAccountInfoModel> AccountInfoGet(string googleID);
+		public Task<int> AccountInfoAdd(string uid, string gid, string name, string email, string account, Int16 status);
 	}
 }

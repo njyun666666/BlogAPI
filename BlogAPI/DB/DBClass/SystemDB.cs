@@ -14,7 +14,7 @@ namespace BlogAPI.DB.DBClass
         private const string ReadCommitSession = "set session transaction isolation level read committed";
 
 
-        static public void testconnect(string connectionstr)
+        public static void testconnect(string connectionstr)
         {
             using (var conn = new MySqlConnection(connectionstr))
             {
@@ -23,7 +23,7 @@ namespace BlogAPI.DB.DBClass
             }
         }
 
-        static public List<T> Query<T>(string connStr, string sqlStatement, object param = null,
+        public static List<T> Query<T>(string connStr, string sqlStatement, object param = null,
             IDbTransaction trans = null, CommandType type = CommandType.Text)
         {
 
@@ -45,9 +45,30 @@ namespace BlogAPI.DB.DBClass
             return result;
         }
 
+        public static async Task<List<T>> QueryAsync<T>(string connStr, string sqlStatement, object param = null,
+            IDbTransaction trans = null, CommandType type = CommandType.Text)
+        {
+            List<T> result;
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            {
+                try
+                {
+                    if (conn.State == ConnectionState.Closed) conn.Open();
+                    conn.Execute(ReadOnlySession);
+                    result = (await conn.QueryAsync<T>(sqlStatement, param, trans, commandType: type)).AsList();
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+
+            }
+            return result;
+        }
 
 
-        static public T SingleQuery<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null,
+
+        public static T SingleQuery<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null,
             CommandType type = CommandType.Text, bool NeedCommitData = false)
         {
 
@@ -77,7 +98,36 @@ namespace BlogAPI.DB.DBClass
             return result;
         }
 
-        static public int Insert(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null, bool DoTransaction = true)
+        public static async Task<T> SingleQueryAsync<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null,
+            CommandType type = CommandType.Text, bool NeedCommitData = false)
+        {
+            T result;
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            {
+                try
+                {
+                    if (conn.State == ConnectionState.Closed) conn.Open();
+
+                    if (NeedCommitData)
+                    {
+                        conn.Execute(ReadCommitSession);
+                    }
+                    else
+                    {
+                        conn.Execute(ReadOnlySession);
+                    }
+                    result = await conn.QueryFirstOrDefaultAsync<T>(sqlStatement, param, trans, commandType: type);
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+
+            return result;
+        }
+
+        public static int Execute(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null, bool DoTransaction = true)
         {
             int result = 0;
             using (MySqlConnection conn = new MySqlConnection(connStr))
@@ -115,7 +165,7 @@ namespace BlogAPI.DB.DBClass
             return result;
         }
 
-        static public int Update(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null, bool DoTransaction = true)
+        public static async Task<int> ExecuteAsync(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null, bool DoTransaction = true)
         {
             int result = 0;
             using (MySqlConnection conn = new MySqlConnection(connStr))
@@ -127,7 +177,7 @@ namespace BlogAPI.DB.DBClass
                     {
                         try
                         {
-                            result = conn.Execute(sqlStatement, param, transaction);
+                            result = await conn.ExecuteAsync(sqlStatement, param, transaction);
                             transaction.Commit();
                         }
                         catch (Exception ex)
@@ -148,12 +198,13 @@ namespace BlogAPI.DB.DBClass
                         throw ex;
                     }
                 }
+
             }
             return result;
-
         }
 
-        static public T InsertAndQuery<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null)
+
+        public static T InsertAndQuery<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null)
         {
             T result;
             using (MySqlConnection conn = new MySqlConnection(connStr))

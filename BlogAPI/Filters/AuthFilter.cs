@@ -10,27 +10,35 @@ using System.Threading.Tasks;
 
 namespace BlogAPI.Filters
 {
-    public class AuthFilter : ActionFilterAttribute
-    {
+    public class AuthFilter : IAsyncActionFilter
+	{
         private IAuthService _authService;
         private string[] roles;
 
-        public AuthFilter(IConfiguration config, IAuthService authService, string roles_string)
+        public AuthFilter(IAuthService authService, string roles_string)
         {
             _authService = authService;
             roles = roles_string.Split(",");
         }
 
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            string uid = context.HttpContext.Request.Headers["UID"];
+		public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+		{
+			string uid = context.HttpContext.Request.Headers["UID"];
 
-            if (string.IsNullOrWhiteSpace(uid) || !_authService.Check(uid, roles))
-            {
-                context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
-                return;
-            }
+			if (string.IsNullOrWhiteSpace(uid))
+			{
+				context.Result = new StatusCodeResult(StatusCodes.Status401Unauthorized);
+				return;
+			}
 
-        }
-    }
+			if (!await _authService.Check(uid, roles))
+			{
+				context.Result = new StatusCodeResult(StatusCodes.Status403Forbidden);
+				return;
+			}
+
+			var resultContext = await next();
+		}
+
+	}
 }

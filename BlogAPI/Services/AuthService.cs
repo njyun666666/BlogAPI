@@ -69,14 +69,14 @@ namespace BlogAPI.Services
 			return null;
 		}
 
-		public bool TokenKeyCheck(TokenModel model)
+		public async Task<bool> TokenKeyCheck(TokenModel model)
 		{
-			return db_Login.TokenKeyCheck(model.TokenKey, model.UID);
+			return await db_Login.TokenKeyCheck(model.TokenKey, model.UID);
 		}
 
-		public bool Check(string uid, string[] roles)
+		public async Task<bool> Check(string uid, string[] roles)
 		{
-			return db_Auth.Check(uid, roles);
+			return await db_Auth.Check(uid, roles);
 		}
 	}
 }

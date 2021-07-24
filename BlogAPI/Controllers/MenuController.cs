@@ -21,9 +21,9 @@ namespace BlogAPI.Controllers
 		}
 
 		[HttpGet("{type:int:min(1)}")]
-		public IActionResult MenuGet([FromHeader]string UID, [FromRoute] int type)
+		public async Task<IActionResult> MenuGet([FromHeader]string UID, [FromRoute] int type)
 		{
-			return Ok(_menuService.GetMenu(UID, type));
+			return Ok(await _menuService.GetMenu(UID, type));
 		}
 
 	}

@@ -21,17 +21,17 @@ namespace BlogAPI.Services
 			db_Login = blogDB_Login;
 		}
 
-		public OrgAccountInfoModel AccountInfoGet(string googleID)
+		public async Task<OrgAccountInfoModel> AccountInfoGet(string googleID)
 		{
-			return db_Org.AccountInfoGet(googleID);
+			return await db_Org.AccountInfoGet(googleID);
 		}
 
-		public OrgAccountInfoModel AccountInfoAdd(GoogleJsonWebSignature.Payload googleUser)
+		public async Task<OrgAccountInfoModel> AccountInfoAdd(GoogleJsonWebSignature.Payload googleUser)
 		{
 			string uid = Guid.NewGuid().ToString().Replace("-", "").ToLower();
 			string account = googleUser.Email.Split('@').First();
 			Int16 status = 1;
-			int result = db_Org.AccountInfoAdd(uid, googleUser.Subject, googleUser.Name, googleUser.Email, account, status);
+			int result = await db_Org.AccountInfoAdd(uid, googleUser.Subject, googleUser.Name, googleUser.Email, account, status);
 
 			if (result > 0)
 			{
@@ -49,9 +49,9 @@ namespace BlogAPI.Services
 			return null;
 		}
 
-		public int LoginLogAdd(string uid, string key, string ip)
+		public async Task<int> LoginLogAdd(string uid, string key, string ip)
 		{
-			return db_Login.LoginLogAdd(key, uid, ip, 1);
+			return await db_Login.LoginLogAdd(key, uid, ip, 1);
 		}
 
 
