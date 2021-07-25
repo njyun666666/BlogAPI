@@ -43,7 +43,7 @@ namespace BlogAPI.Controllers
 				return Ok(new FailReturn());
 			}
 
-			return Ok();
+			return Ok(new OkReturn());
 		}
 
 
