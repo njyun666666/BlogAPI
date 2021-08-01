@@ -8,7 +8,7 @@ namespace BlogAPI.Services.IServices
 {
 	public interface IAuthService
 	{
-		public string CreateToken(string uid, string key);
+		public string CreateToken(string uid, string tokenKey);
 		public TokenModel TokenDecrypt(string token);
 		public Task<bool> TokenKeyCheck(TokenModel model);
 		public Task<bool> Check(string uid, string[] roles);
