@@ -3,28 +3,39 @@ using BlogAPI.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace BlogAPI.Models
 {
 	public class ReturnModel
 	{
-		public ReturnCodeEnum Code { get; set; }
-		public string Message { get; set; }
+		public int code { get; set; }
+		public string message { get; set; }
+		[JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+		public object data { get; set; }
 
-		public ReturnModel()
+		public ReturnModel(int _code, string _message = null, object _data = null)
 		{
-			
+			code = _code;
+			message = _message;
+			data = _data;
+
+			if (string.IsNullOrWhiteSpace(_message))
+			{
+				message = EnumExtenstions.GetEnumDescription((ReturnCodeEnum)_code);
+			}
 		}
 
-		public ReturnModel(ReturnCodeEnum code, string message = null)
+		public ReturnModel(ReturnCodeEnum _code, string _message = null, object _data = null)
 		{
-			Code = code;
-			Message = message;
+			code = (int)_code;
+			message = _message;
+			data = _data;
 
-			if (string.IsNullOrWhiteSpace(message))
+			if (string.IsNullOrWhiteSpace(_message))
 			{
-				Message = EnumExtenstions.GetEnumDescription(code);
+				message = EnumExtenstions.GetEnumDescription(_code);
 			}
 		}
 	}
@@ -32,6 +43,10 @@ namespace BlogAPI.Models
 	public class OkReturn : ReturnModel
 	{
 		public OkReturn() : base(ReturnCodeEnum.success) { }
+		public OkReturn(object data) : base(ReturnCodeEnum.success)
+		{
+			this.data = data;
+		}
 	}
 
 	public class FailReturn : ReturnModel
@@ -43,7 +58,12 @@ namespace BlogAPI.Models
 		public ParamErrorReturn() : base(ReturnCodeEnum.param_error) { }
 		public ParamErrorReturn(string paramName) : base(ReturnCodeEnum.param_error)
 		{
-			this.Message = "缺少參數:" + paramName;
+			this.message = "缺少參數:" + paramName;
 		}
 	}
+	public class ExceptionReturn : ReturnModel
+	{
+		public ExceptionReturn() : base(ReturnCodeEnum.exception) { }
+	}
+
 }

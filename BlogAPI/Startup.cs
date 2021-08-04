@@ -2,11 +2,13 @@ using BlogAPI.Common;
 using BlogAPI.DB.BlogDB;
 using BlogAPI.DB.BlogDB.IBlogDB;
 using BlogAPI.DB.DBClass;
+using BlogAPI.Helper;
 using BlogAPI.Middlewares;
 using BlogAPI.Services;
 using BlogAPI.Services.IServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -74,8 +76,10 @@ namespace BlogAPI
 				app.UseSwagger();
 				app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "BlogAPI v1"));
 			}
-
-
+			else
+			{
+				app.AddProductionExceptionHandling();
+			}
 
 
 			app.UseMiddleware<GoogleTokenMiddleware>();
