@@ -1,4 +1,6 @@
 ﻿using BlogAPI.DB.BlogDB.IBlogDB;
+using BlogAPI.Enums;
+using BlogAPI.Models;
 using BlogAPI.Models.Settings;
 using BlogAPI.Services.IServices;
 using System;
@@ -24,5 +26,18 @@ namespace BlogAPI.Services
 		{
 			return await db_Settings.Edit(uid, model, editor);
 		}
+		public async Task<List<ArticleTypeModel>> ArticleTypeGet(string uid)
+		{
+			return await db_Settings.ArticleTypeGet(uid);
+		}
+		public async Task<int> ArticleTypeAdd(string uid, string name)
+		{
+			return await db_Settings.ArticleTypeAdd(uid, name);			
+		}
+		public async Task<int> ArticleTypeEdit(string uid, string name, Int64 id)
+		{
+			return await db_Settings.ArticleTypeEdit(uid, name, id);
+		}
+
 	}
 }

@@ -10,5 +10,8 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 	{
 		public Task<BlogSettingModel> GetBlogSetting(string uid);
 		public Task<int> Edit(string uid, BlogSettingModel model, string editor);
+		public Task<List<ArticleTypeModel>> ArticleTypeGet(string uid);
+		public Task<int> ArticleTypeAdd(string uid, string name);
+		public Task<int> ArticleTypeEdit(string uid, string name, Int64 id);
 	}
 }

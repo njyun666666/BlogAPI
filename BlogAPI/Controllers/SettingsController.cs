@@ -33,7 +33,7 @@ namespace BlogAPI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Edit([FromHeader] string UID, BlogSettingModel model)
 		{
-			if (string.IsNullOrWhiteSpace(model.Title))
+			if (string.IsNullOrWhiteSpace(model.Title) || string.IsNullOrWhiteSpace(model.Title.Trim()))
 			{
 				return Ok(new ParamErrorReturn());
 			}
@@ -46,6 +46,30 @@ namespace BlogAPI.Controllers
 			return Ok(new OkReturn());
 		}
 
+		[HttpPost]
+		public async Task<IActionResult> ArticleTypeGet([FromHeader] string UID)
+		{
+			return Ok(await _settingService.ArticleTypeGet(UID));
+		}
+		[HttpPost]
+		public async Task<IActionResult> ArticleTypeAdd([FromHeader] string UID, ArticleTypeAddModel model)
+		{
+			if (string.IsNullOrWhiteSpace(model.Name) || model.Name.Trim() == "")
+			{
+				return Ok(new ParamErrorReturn());
+			}
 
+			return Ok(new ReturnModel(await _settingService.ArticleTypeAdd(UID, model.Name)));
+		}
+		[HttpPost]
+		public async Task<IActionResult> ArticleTypeEdit([FromHeader] string UID, ArticleTypeAddModel model)
+		{
+			if (string.IsNullOrWhiteSpace(model.Name) || model.Name.Trim() == "")
+			{
+				return Ok(new ParamErrorReturn());
+			}
+
+			return Ok(new ReturnModel(await _settingService.ArticleTypeEdit(UID, model.Name, model.ID)));
+		}
 	}
 }
