@@ -41,6 +41,7 @@ namespace BlogAPI
 
 
 			services.AddSingleton<IDBConnection, DBConnection>();
+			services.AddSingleton<IDB_Test, DB_Test>();
 
 			#region BlogDB
 			services.AddSingleton<IBlogDB_Menu, BlogDB_Menu>();
