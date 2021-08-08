@@ -173,8 +173,16 @@ namespace BlogAPI.DB.BlogDB
 
 			}
 			return result;
+		}
+		public async Task<int> ArticleTypeDelete(string uid, Int64 id)
+		{
+			string sql = "DELETE FROM `TB_Article_Type` WHERE `ID` = @in_id and `UID`=@in_uid ;";
 
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_id", id, DbType.Int64);
+			_params.Add("@in_uid", uid, DbType.String, size: 255);
 
+			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
 		}
 	}
 }

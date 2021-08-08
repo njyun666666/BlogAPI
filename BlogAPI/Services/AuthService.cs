@@ -53,6 +53,11 @@ namespace BlogAPI.Services
 				string payload_str = token_arr[1];
 				string signature = token_arr[2];
 
+				if (_googleLoginService.GetUser() == null)
+				{
+					return null;
+				}
+
 				string gid = _googleLoginService.GetUser().Subject;
 
 				string payload_decrypt = CommonTool.AESDecrypt(payload_str, _myService.BlogAPI_Key(), iv);

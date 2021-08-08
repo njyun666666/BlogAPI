@@ -71,5 +71,10 @@ namespace BlogAPI.Controllers
 
 			return Ok(new ReturnModel(await _settingService.ArticleTypeEdit(UID, model.Name, model.ID)));
 		}
+		[HttpPost]
+		public async Task<IActionResult> ArticleTypeDelete([FromHeader] string UID, ArticleTypeAddModel model)
+		{
+			return Ok(new ReturnModel(await _settingService.ArticleTypeDelete(UID, model.ID)));
+		}
 	}
 }

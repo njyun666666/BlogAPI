@@ -38,6 +38,9 @@ namespace BlogAPI.Services
 		{
 			return await db_Settings.ArticleTypeEdit(uid, name, id);
 		}
-
+		public async Task<int> ArticleTypeDelete(string uid, Int64 id)
+		{
+			return await db_Settings.ArticleTypeDelete(uid, id);
+		}
 	}
 }
