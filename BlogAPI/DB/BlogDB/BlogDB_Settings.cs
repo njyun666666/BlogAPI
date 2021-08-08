@@ -176,7 +176,7 @@ namespace BlogAPI.DB.BlogDB
 		}
 		public async Task<int> ArticleTypeDelete(string uid, Int64 id)
 		{
-			string sql = "DELETE FROM `TB_Article_Type` WHERE `ID` = @in_id and `UID`=@in_uid ;";
+			string sql = "UPDATE `TB_Article_Type` SET `Status` = 0 WHERE `ID` = @in_id and `UID`=@in_uid ;";
 
 			DynamicParameters _params = new DynamicParameters();
 			_params.Add("@in_id", id, DbType.Int64);
