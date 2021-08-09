@@ -184,5 +184,22 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
 		}
+		public async Task<int> ArticleTypeSortEdit(string uid, List<int> ids)
+		{
+			string sql = "";
+			int i = 1;
+
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String, size: 255);
+
+			ids.ForEach(x =>
+			{
+				sql += $"UPDATE `TB_Article_Type` SET `Sort` = {i} WHERE `ID` = @in_id_{i} and `UID`=@in_uid ;";
+				_params.Add("@in_id_" + i, x, DbType.Int32);
+				i++;
+			});
+
+			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
+		}
 	}
 }

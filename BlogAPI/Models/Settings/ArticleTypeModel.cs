@@ -26,4 +26,8 @@ namespace BlogAPI.Models.Settings
 		public Int64 ID { get; set; }
 		public string Name { get; set; }
 	}
+	public class ArticleTypeSortRequestModel
+	{
+		public List<int> ids { get; set; }
+	}
 }

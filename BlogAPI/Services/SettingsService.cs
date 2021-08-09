@@ -42,5 +42,9 @@ namespace BlogAPI.Services
 		{
 			return await db_Settings.ArticleTypeDelete(uid, id);
 		}
+		public async Task<int> ArticleTypeSortEdit(string uid, List<int> ids)
+		{
+			return await db_Settings.ArticleTypeSortEdit(uid, ids);
+		}
 	}
 }

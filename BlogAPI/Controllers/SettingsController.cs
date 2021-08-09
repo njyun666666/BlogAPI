@@ -76,5 +76,15 @@ namespace BlogAPI.Controllers
 		{
 			return Ok(new ReturnModel(await _settingService.ArticleTypeDelete(UID, model.ID)));
 		}
+		[HttpPost]
+		public async Task<IActionResult> ArticleTypeSortEdit([FromHeader] string UID, ArticleTypeSortRequestModel model)
+		{
+			if (await _settingService.ArticleTypeSortEdit(UID, model.ids) > 0)
+			{
+				return Ok(new OkReturn());
+			}
+
+			return Ok(new FailReturn());
+		}
 	}
 }

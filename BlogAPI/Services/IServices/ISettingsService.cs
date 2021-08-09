@@ -15,5 +15,6 @@ namespace BlogAPI.Services.IServices
 		public Task<int> ArticleTypeAdd(string uid, string name);
 		public Task<int> ArticleTypeEdit(string uid, string name, Int64 id);
 		public Task<int> ArticleTypeDelete(string uid, Int64 id);
+		public Task<int> ArticleTypeSortEdit(string uid, List<int> ids);
 	}
 }
