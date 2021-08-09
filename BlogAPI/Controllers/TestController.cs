@@ -17,9 +17,9 @@ namespace BlogAPI.Controllers
 		{
 			_dB_Test = dB_Test;
 		}
-		public IActionResult Get()
+		public async Task<IActionResult> Get()
 		{
-			return Ok(new { BlogDB = _dB_Test.BlogDBTest() });
+			return Ok(new { BlogDB = await _dB_Test.BlogDBTest() });
 		}
 	}
 }

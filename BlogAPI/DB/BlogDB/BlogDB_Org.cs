@@ -20,11 +20,6 @@ namespace BlogAPI.DB.BlogDB
 			str_conn = dBConnection.ConnectionBlogDB();
 		}
 
-		public void test()
-		{
-			SystemDB.testconnect(str_conn);
-		}
-
 		public async Task<OrgAccountInfoModel> AccountInfoGet(string googleID)
 		{
 			string sql = "select * from TB_Org_Account_Info where GID=@in_GID ";

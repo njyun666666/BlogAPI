@@ -63,7 +63,7 @@ namespace BlogAPI.DB.BlogDB
 
 			using (MySqlConnection conn = new MySqlConnection(str_conn))
 			{
-				if (conn.State == ConnectionState.Closed) conn.Open();
+				if (conn.State == ConnectionState.Closed) await conn.OpenAsync();
 				using (var transaction = conn.BeginTransaction())
 				{
 					try
@@ -125,7 +125,7 @@ namespace BlogAPI.DB.BlogDB
 
 			using (MySqlConnection conn = new MySqlConnection(str_conn))
 			{
-				if (conn.State == ConnectionState.Closed) conn.Open();
+				if (conn.State == ConnectionState.Closed) await conn.OpenAsync();
 				using (var transaction = conn.BeginTransaction())
 				{
 					try

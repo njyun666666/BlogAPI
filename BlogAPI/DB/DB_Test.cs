@@ -10,7 +10,7 @@ namespace BlogAPI.DB.BlogDB
 {
 	public interface IDB_Test
 	{
-		public int BlogDBTest();
+		public Task<int> BlogDBTest();
 	}
 	public class DB_Test : IDB_Test
 	{
@@ -21,7 +21,7 @@ namespace BlogAPI.DB.BlogDB
 			blogDB_conn = dBConnection.ConnectionBlogDB();
 		}
 
-		public int BlogDBTest()
+		public async Task<int> BlogDBTest()
 		{
 			int result = 0;
 
@@ -29,7 +29,7 @@ namespace BlogAPI.DB.BlogDB
 			{
 				using (MySqlConnection conn = new MySqlConnection(blogDB_conn))
 				{
-					if (conn.State == ConnectionState.Closed) conn.Open();
+					if (conn.State == ConnectionState.Closed) await conn.OpenAsync();
 					result = 1;
 				}
 			}

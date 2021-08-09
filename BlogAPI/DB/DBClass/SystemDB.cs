@@ -13,16 +13,6 @@ namespace BlogAPI.DB.DBClass
         private const string ReadOnlySession = "set session transaction isolation level read uncommitted";
         private const string ReadCommitSession = "set session transaction isolation level read committed";
 
-
-        public static void testconnect(string connectionstr)
-        {
-            using (var conn = new MySqlConnection(connectionstr))
-            {
-                conn.Open();
-                conn.Close();
-            }
-        }
-
         public static List<T> Query<T>(string connStr, string sqlStatement, object param = null,
             IDbTransaction trans = null, CommandType type = CommandType.Text)
         {
@@ -53,7 +43,7 @@ namespace BlogAPI.DB.DBClass
             {
                 try
                 {
-                    if (conn.State == ConnectionState.Closed) conn.Open();
+                    if (conn.State == ConnectionState.Closed) await conn.OpenAsync();
                     conn.Execute(ReadOnlySession);
                     result = (await conn.QueryAsync<T>(sqlStatement, param, trans, commandType: type)).AsList();
                 }
@@ -106,7 +96,7 @@ namespace BlogAPI.DB.DBClass
             {
                 try
                 {
-                    if (conn.State == ConnectionState.Closed) conn.Open();
+                    if (conn.State == ConnectionState.Closed) await conn.OpenAsync();
 
                     if (NeedCommitData)
                     {
@@ -170,7 +160,7 @@ namespace BlogAPI.DB.DBClass
             int result = 0;
             using (MySqlConnection conn = new MySqlConnection(connStr))
             {
-                if (conn.State == ConnectionState.Closed) conn.Open();
+                if (conn.State == ConnectionState.Closed) await conn.OpenAsync();
                 if (DoTransaction)
                 {
                     using (var transaction = conn.BeginTransaction())
