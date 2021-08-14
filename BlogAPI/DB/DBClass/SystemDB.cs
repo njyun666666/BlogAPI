@@ -58,7 +58,7 @@ namespace BlogAPI.DB.DBClass
 
 
 
-        public static T SingleQuery<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null,
+        public static T QueryFirstOrDefault<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null,
             CommandType type = CommandType.Text, bool NeedCommitData = false)
         {
 
@@ -77,7 +77,7 @@ namespace BlogAPI.DB.DBClass
                     {
                         conn.Execute(ReadOnlySession);
                     }
-                    result = conn.Query<T>(sqlStatement, param, trans, commandType: type).FirstOrDefault();
+                    result = conn.QueryFirstOrDefault<T>(sqlStatement, param, trans, commandType: type);
                 }
                 catch (Exception ex)
                 {
@@ -88,7 +88,7 @@ namespace BlogAPI.DB.DBClass
             return result;
         }
 
-        public static async Task<T> SingleQueryAsync<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null,
+        public static async Task<T> QueryFirstOrDefaultAsync<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null,
             CommandType type = CommandType.Text, bool NeedCommitData = false)
         {
             T result;

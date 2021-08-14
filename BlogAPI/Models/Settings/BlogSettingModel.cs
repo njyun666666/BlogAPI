@@ -16,5 +16,7 @@ namespace BlogAPI.Models.Settings
 		public DateTime? UpdateDate { get; set; }
 		[JsonIgnore]
 		public string Editor { get; set; }
+		[JsonIgnore]
+		public Int16 IndexDefault { get; set; }
 	}
 }

@@ -27,7 +27,7 @@ namespace BlogAPI.DB.BlogDB
 			DynamicParameters _params = new DynamicParameters();
 			_params.Add("@in_GID", googleID, DbType.String, size: 255);
 
-			return await SystemDB.SingleQueryAsync<OrgAccountInfoModel>(str_conn, sql, _params);
+			return await SystemDB.QueryFirstOrDefaultAsync<OrgAccountInfoModel>(str_conn, sql, _params);
 		}
 
 		public async Task<int> AccountInfoAdd(string uid, string gid, string name, string email, string account, Int16 status)

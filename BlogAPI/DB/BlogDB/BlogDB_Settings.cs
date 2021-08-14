@@ -20,7 +20,7 @@ namespace BlogAPI.DB.BlogDB
 		{
 			str_conn = dBConnection.ConnectionBlogDB();
 		}
-
+		#region Blog Setting
 		public async Task<BlogSettingModel> GetBlogSetting(string uid)
 		{
 			string sql = "select * from TB_Blog_Setting where UID=@in_uid";
@@ -28,9 +28,9 @@ namespace BlogAPI.DB.BlogDB
 			DynamicParameters _params = new DynamicParameters();
 			_params.Add("@in_uid", uid, DbType.String, size: 255);
 
-			return await SystemDB.SingleQueryAsync<BlogSettingModel>(str_conn, sql, _params);
+			return await SystemDB.QueryFirstOrDefaultAsync<BlogSettingModel>(str_conn, sql, _params);
 		}
-
+		
 		public async Task<int> Edit(string uid, BlogSettingModel model, string editor)
 		{
 			string sql = "UPDATE `TB_Blog_Setting`" +
@@ -45,7 +45,8 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
 		}
-
+		#endregion
+		#region 文章類型
 		public async Task<List<ArticleTypeModel>> ArticleTypeGet(string uid)
 		{
 			string sql = "select * from TB_Article_Type where UID=@in_uid and Status=1 order by Sort";
@@ -200,6 +201,24 @@ namespace BlogAPI.DB.BlogDB
 			});
 
 			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
+		}
+		#endregion
+
+		public async Task<BlogSettingModel> GetIndexDefault()
+		{
+			string sql = "select s.UID, s.Title from TB_Org_Account_Info i join TB_Blog_Setting s on i.UID=s.UID" +
+						 " where i.Status = 1 and s.Status = 1 and s.Indexdefault = 1 limit 1";
+			return await SystemDB.QueryFirstOrDefaultAsync<BlogSettingModel>(str_conn, sql);
+		}
+		public async Task<BlogSettingModel> GetAccountSetting(string account)
+		{
+			string sql = "select s.UID, s.Title from TB_Org_Account_Info i join TB_Blog_Setting s on i.UID=s.UID" +
+						 " where i.Account=@in_account and i.Status=1 and s.Status=1 limit 1";
+
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_account", account, DbType.String, size: 255);
+
+			return await SystemDB.QueryFirstOrDefaultAsync<BlogSettingModel>(str_conn, sql, _params);
 		}
 	}
 }

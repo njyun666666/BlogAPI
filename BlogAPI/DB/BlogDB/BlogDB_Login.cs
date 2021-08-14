@@ -44,7 +44,7 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_key", key, DbType.String, size: 255);
 			_params.Add("@in_uid", uid, DbType.String, size: 255);
 
-			return await SystemDB.SingleQueryAsync<bool>(str_conn, sql, _params);
+			return await SystemDB.QueryFirstOrDefaultAsync<bool>(str_conn, sql, _params);
 		}
 
 	}
