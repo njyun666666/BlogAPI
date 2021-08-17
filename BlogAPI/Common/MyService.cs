@@ -10,6 +10,9 @@ namespace BlogAPI.Common
     {
         public string Google_client_id();
         public string BlogAPI_Key();
+        public Int64 FileUploadSizeLimit_byte();
+        public string FileUploadPath();
+        public string FileSite();
     }
     public class MyService : IMyService
     {
@@ -27,6 +30,17 @@ namespace BlogAPI.Common
         {
             return _config["BlogAPI_Key"];
         }
-
+        public Int64 FileUploadSizeLimit_byte()
+		{
+            return Convert.ToInt64(_config["FileUploadSizeLimit_MB"]) * 1024 * 1024;
+        }
+        public string FileUploadPath()
+		{
+            return _config["FileUploadPath"];
+		}
+        public string FileSite()
+		{
+            return _config["FileSite"];
+        }
     }
 }
