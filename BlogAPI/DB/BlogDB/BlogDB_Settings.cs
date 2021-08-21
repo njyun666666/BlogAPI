@@ -97,12 +97,15 @@ namespace BlogAPI.DB.BlogDB
 											" (`Name`,`UID`,`Status`,`Sort`,`CreateDate`)" +
 											" VALUES(@in_name, @in_uid, 1, @in_sort, now());";
 
+
 						DynamicParameters _params_insert = new DynamicParameters();
 						_params_insert.Add("@in_uid", uid, DbType.String, size: 255);
 						_params_insert.Add("@in_name", name, DbType.String, size: 50);
 						_params_insert.Add("@in_sort", sort, DbType.Int32);
 
-						result = await conn.ExecuteAsync(sql_insert, _params_insert, transaction);
+						await conn.ExecuteAsync(sql_insert, _params_insert, transaction);
+
+						result = await conn.QueryFirstOrDefaultAsync<int>("SELECT LAST_INSERT_ID();", null, transaction);
 
 						transaction.Commit();
 					}

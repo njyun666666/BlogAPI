@@ -59,7 +59,14 @@ namespace BlogAPI.Controllers
 				return Ok(new ParamErrorReturn());
 			}
 
-			return Ok(new ReturnModel(await _settingService.ArticleTypeAdd(UID, model.Name)));
+			int id = await _settingService.ArticleTypeAdd(UID, model.Name);
+
+			if (id == 0)
+			{
+				return Ok(new FailReturn());
+			}
+
+			return Ok(new OkReturn(id));
 		}
 		[HttpPost]
 		public async Task<IActionResult> ArticleTypeEdit([FromHeader] string UID, ArticleTypeAddModel model)
