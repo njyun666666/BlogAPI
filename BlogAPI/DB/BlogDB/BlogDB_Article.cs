@@ -35,5 +35,25 @@ namespace BlogAPI.DB.BlogDB
 			return await SystemDB.QueryAsync<ArticleListModel>(str_conn, sql, _params);
 		}
 
+		public async Task<Int64> AddArticle(string uid, ArticleListModel model)
+		{
+			string sql = " INSERT INTO `TB_Article_List`" +
+						" (`Title`,`Content`,`TypeID`,`UID`,`Status`,`CreateDate`)" +
+						" VALUES" +
+						" (@in_title, @in_content, @in_typeID, @in_uid, @in_status, now());" +
+
+						" SELECT LAST_INSERT_ID();";
+			
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
+			_params.Add("@in_title", model.Title, DbType.String);
+			_params.Add("@in_content", model.Content, DbType.String);
+			_params.Add("@in_typeID", model.TypeID, DbType.String);
+			_params.Add("@in_status", model.Status, DbType.String);
+
+			return await SystemDB.ExecuteScalarAsync<Int64>(str_conn, sql, _params);
+
+		}
+
 	}
 }

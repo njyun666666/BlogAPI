@@ -117,7 +117,7 @@ namespace BlogAPI.DB.DBClass
             return result;
         }
 
-        public static int Execute(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null, bool DoTransaction = true)
+        public static int Execute(string connStr, string sqlStatement, object param = null, bool DoTransaction = true)
         {
             int result = 0;
             using (MySqlConnection conn = new MySqlConnection(connStr))
@@ -155,7 +155,7 @@ namespace BlogAPI.DB.DBClass
             return result;
         }
 
-        public static async Task<int> ExecuteAsync(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null, bool DoTransaction = true)
+        public static async Task<int> ExecuteAsync(string connStr, string sqlStatement, object param = null, bool DoTransaction = true)
         {
             int result = 0;
             using (MySqlConnection conn = new MySqlConnection(connStr))
@@ -194,7 +194,7 @@ namespace BlogAPI.DB.DBClass
         }
 
 
-        public static T InsertAndQuery<T>(string connStr, string sqlStatement, object param = null, IDbTransaction trans = null)
+        public static T ExecuteScalar<T>(string connStr, string sqlStatement, object param = null)
         {
             T result;
             using (MySqlConnection conn = new MySqlConnection(connStr))
@@ -205,6 +205,29 @@ namespace BlogAPI.DB.DBClass
                     try
                     {
                         result = conn.ExecuteScalar<T>(sqlStatement, param, transaction);
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        throw ex;
+                    }
+                }
+            }
+
+            return result;
+        }
+        public static async Task<T> ExecuteScalarAsync<T>(string connStr, string sqlStatement, object param = null)
+        {
+            T result;
+            using (MySqlConnection conn = new MySqlConnection(connStr))
+            {
+                if (conn.State == ConnectionState.Closed) conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        result = await conn.ExecuteScalarAsync<T>(sqlStatement, param, transaction);
                         transaction.Commit();
                     }
                     catch (Exception ex)

@@ -60,7 +60,9 @@ namespace BlogAPI
 			services.AddSingleton<IGoogleLoginService, GoogleLoginService>();
 			services.AddSingleton<IAuthService, AuthService>();
 			services.AddSingleton<ISettingsService, SettingsService>();
-			services.AddSingleton<IThemeService, ThemeService>();			
+			services.AddSingleton<IThemeService, ThemeService>();
+			services.AddSingleton<IArticleService, ArticleService>();
+			
 			#endregion
 
 

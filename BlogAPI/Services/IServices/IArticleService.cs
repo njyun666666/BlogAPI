@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlogAPI.DB.BlogDB.IBlogDB
+namespace BlogAPI.Services.IServices
 {
-	public interface IBlogDB_Article
+	public interface IArticleService
 	{
-		public Task<List<ArticleListModel>> GetArticleList(string uid, bool all);
 		public Task<Int64> AddArticle(string uid, ArticleListModel model);
 	}
 }

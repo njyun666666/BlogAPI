@@ -31,7 +31,7 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_ip", ip, DbType.String, size: 255);
 			_params.Add("@in_status", status, DbType.Int16);
 
-			return await SystemDB.ExecuteAsync(str_conn, sql, _params, null, false);
+			return await SystemDB.ExecuteAsync(str_conn, sql, _params, false);
 		}
 
 		public async Task<bool> TokenKeyCheck(string key, string uid)
