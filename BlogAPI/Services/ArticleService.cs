@@ -23,7 +23,7 @@ namespace BlogAPI.Services
 		{
 			return await db_Article.AddArticle(uid, model);
 		}
-		public async Task<List<ArticleInfoListModel>> GetList(string uid, ArticleListRequestModel model)
+		public async Task<List<ArticleInfoListModel>> GetIndexList(string uid, ArticleListRequestModel model)
 		{
 			int self = 0;
 
@@ -51,7 +51,7 @@ namespace BlogAPI.Services
 				self = 1;
 			}
 
-			return await db_Article.GetArticleInfoList(targetUID, self);
+			return await db_Article.GetIndexList(targetUID, self);
 		}
 
 	}
