@@ -33,7 +33,7 @@ namespace BlogAPI.Services
 			{
 				settingModel = await db_Settings.GetBlogSetting(uid);
 			}
-			else if (string.IsNullOrWhiteSpace(model.Account))
+			else if (string.IsNullOrWhiteSpace(model.Account) || model.Account == "i")
 			{
 				settingModel = await db_Settings.GetIndexDefault();
 			}

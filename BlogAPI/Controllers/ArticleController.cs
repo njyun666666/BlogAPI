@@ -34,6 +34,10 @@ namespace BlogAPI.Controllers
 			}
 
 		}
+		public async Task<IActionResult> GetList([FromHeader] string UID, ArticleListRequestModel model)
+		{
+			return Ok(await _articleService.GetList(UID, model));
+		}
 
 	}
 }

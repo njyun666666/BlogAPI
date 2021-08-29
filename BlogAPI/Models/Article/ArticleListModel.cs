@@ -16,4 +16,9 @@ namespace BlogAPI.Models.Article
 		public DateTime? CreateDate { get; set; }
 		public DateTime? UpdateDate { get; set; }
 	}
+	public class ArticleInfoListModel : ArticleListModel
+	{
+		public string TypeName { get; set; }
+		public string UserName { get; set; }
+	}
 }

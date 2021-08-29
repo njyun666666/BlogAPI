@@ -34,7 +34,21 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.QueryAsync<ArticleListModel>(str_conn, sql, _params);
 		}
+		public async Task<List<ArticleInfoListModel>> GetArticleInfoList(string uid, int self)
+		{
+			string sql = "select l.*, t.Name as TypeName, ai.Name as UserName from TB_Article_List l join TB_Article_Type t on l.TypeID=t.ID" +
+						" join TB_Org_Account_Info ai on l.UID=ai.UID" +
+						" where ai.UID=@in_uid " +
+						" and ai.Status=1 and ( @in_self=1 or l.Status=1 ) " +
+						" order by l.CreateDate desc";
 
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
+			_params.Add("@in_self", self, DbType.Int32);
+
+			return await SystemDB.QueryAsync<ArticleInfoListModel>(str_conn, sql, _params);
+
+		}
 		public async Task<Int64> AddArticle(string uid, ArticleListModel model)
 		{
 			string sql = " INSERT INTO `TB_Article_List`" +
