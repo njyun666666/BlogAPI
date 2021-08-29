@@ -52,9 +52,9 @@ namespace BlogAPI.DB.BlogDB
 		public async Task<Int64> AddArticle(string uid, ArticleListModel model)
 		{
 			string sql = " INSERT INTO `TB_Article_List`" +
-						" (`Title`,`Content`,`TypeID`,`UID`,`Status`,`CreateDate`)" +
+						" (`Title`,`Content`,`Description`,`TypeID`,`UID`,`Status`,`CreateDate`)" +
 						" VALUES" +
-						" (@in_title, @in_content, @in_typeID, @in_uid, @in_status, now());" +
+						" (@in_title, @in_content, @in_description, @in_typeID, @in_uid, @in_status, now());" +
 
 						" SELECT LAST_INSERT_ID();";
 			
@@ -62,6 +62,7 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_uid", uid, DbType.String);
 			_params.Add("@in_title", model.Title, DbType.String);
 			_params.Add("@in_content", model.Content, DbType.String);
+			_params.Add("@in_description", model.Description, DbType.String);
 			_params.Add("@in_typeID", model.TypeID, DbType.String);
 			_params.Add("@in_status", model.Status, DbType.String);
 

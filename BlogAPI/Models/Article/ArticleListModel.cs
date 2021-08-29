@@ -10,6 +10,7 @@ namespace BlogAPI.Models.Article
 		public Int64 ID { get; set; }
 		public string Title { get; set; }
 		public string Content { get; set; }
+		public string Description { get; set; }
 		public Int64 TypeID { get; set; }
 		public string UID { get; set; }
 		public Int16 Status { get; set; }
