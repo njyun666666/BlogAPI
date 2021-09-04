@@ -66,7 +66,7 @@ namespace BlogAPI.Controllers
 		}
 
 		[HttpPost]
-		[TypeFilter(typeof(LoginFilter))]
+		[LoginFilter]
 		public IActionResult Check()
 		{
 			return Ok();

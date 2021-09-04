@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogAPI.Filters
 {
-	public class LoginFilter : IAsyncActionFilter
+	public class LoginFilter : Attribute, IAsyncActionFilter
     {
 
         public LoginFilter()
