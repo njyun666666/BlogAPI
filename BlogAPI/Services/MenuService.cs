@@ -23,7 +23,15 @@ namespace BlogAPI.Services
 		public async Task<List<MenuViewModel>> GetMenu(string uid, int type)
 		{
 			menus = await db_Menu.GetMenu(uid, type);
-			return SetMenu(0);
+			List<MenuViewModel> list = SetMenu(0);
+
+			MenuViewModel myblog = list.Where(x => x.MenuID == 1).SingleOrDefault();
+			if (myblog != null)
+			{
+				myblog.Url = "/" + await db_Menu.GetBlogAccount(uid);
+			}
+
+			return list;
 		}
 
 		public List<MenuViewModel> SetMenu(int parentID)

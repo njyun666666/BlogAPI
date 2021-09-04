@@ -34,7 +34,16 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.QueryAsync<MenuModel>(str_conn, sql, _params);
 		}
+		public async Task<string> GetBlogAccount(string uid)
+		{
+			string sql= "select if(b.IndexDefault=1,'', a.Account) from TB_Org_Account_Info a join TB_Blog_Setting b on a.UID=b.UID"+
+						" where a.UID = @in_uid ";
+			
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
 
+			return await SystemDB.QueryFirstOrDefaultAsync<string>(str_conn, sql, _params);
+		}
 
 	}
 }
