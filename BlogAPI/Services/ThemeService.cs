@@ -46,39 +46,18 @@ namespace BlogAPI.Services
 			{
 				return null;
 			}
-			
+
+			if (settingModel.UID == uid)
+			{
+				model.Self = 1;
+			}
+
 			targetUID = settingModel.UID;
 			result.Title = settingModel.Title;
 
 
-			List<ArticleTypeModel> typeList = new List<ArticleTypeModel>();
-			List<ArticleListModel> articleList = new List<ArticleListModel>();
+			result.Menu = await db_Article.GetArticlesTypeMenu(targetUID, model.Self);
 
-			
-			// 取得文章類型
-			Task taskGetTypeList = Task.Run(async () =>
-			{
-				typeList = await db_Settings.ArticleTypeGet(targetUID);
-			});
-
-			// 取得文章清單
-			Task taskGetArticleList = Task.Run(async () =>
-			{
-				articleList = await db_Article.GetArticleList(targetUID, false);
-			});
-
-
-			await Task.WhenAll(taskGetTypeList, taskGetArticleList);
-
-			result.Menu = typeList.Select(x => new MenuViewModel()
-			{
-				MenuID = (int)x.ID,
-				Title = x.Name,
-				Children = articleList.Where(a => a.TypeID == x.ID).Select(a => new MenuViewModel() {
-					Title = a.Title,
-					Url = $"/article/{a.ID}"
-				}).ToList()
-			}).ToList();
 
 			return result;
 

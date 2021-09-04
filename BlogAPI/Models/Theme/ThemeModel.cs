@@ -1,4 +1,5 @@
-﻿using BlogAPI.Models.Menu;
+﻿using BlogAPI.Models.Article;
+using BlogAPI.Models.Menu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,6 @@ namespace BlogAPI.Models.Theme
 	public class ThemeDataViewModel
 	{
 		public string Title { get; set; }
-		public List<MenuViewModel> Menu { get; set; }
+		public List<ArticlesTypeMenuModel> Menu { get; set; }
 	}
 }

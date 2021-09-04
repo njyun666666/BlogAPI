@@ -1,6 +1,7 @@
 ﻿using BlogAPI.DB.BlogDB.IBlogDB;
 using BlogAPI.DB.DBClass;
 using BlogAPI.Enums;
+using BlogAPI.Models.Article;
 using BlogAPI.Models.Settings;
 using Dapper;
 using MySqlConnector;
@@ -213,6 +214,7 @@ namespace BlogAPI.DB.BlogDB
 						 " where i.Status = 1 and s.Status = 1 and s.Indexdefault = 1 limit 1";
 			return await SystemDB.QueryFirstOrDefaultAsync<BlogSettingModel>(str_conn, sql);
 		}
+
 		public async Task<BlogSettingModel> GetAccountSetting(string account)
 		{
 			string sql = "select s.UID, s.Title from TB_Org_Account_Info i join TB_Blog_Setting s on i.UID=s.UID" +

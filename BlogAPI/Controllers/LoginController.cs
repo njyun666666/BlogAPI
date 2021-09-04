@@ -49,11 +49,16 @@ namespace BlogAPI.Controllers
 				string key = Guid.NewGuid().ToString().Replace("-", "").ToLower();
 				string token = _authService.CreateToken(account.UID, key);
 
+				// login log
 				int add = await _loginService.LoginLogAdd(account.UID, key, IP);
 
 				if (add == 1)
 				{
-					return Ok(new { token });
+					return Ok(new
+					{
+						token = token,
+						account = account.Account
+					});
 				}
 
 				

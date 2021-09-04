@@ -19,7 +19,24 @@ namespace BlogAPI.DB.BlogDB
 		{
 			str_conn = dBConnection.ConnectionBlogDB();
 		}
+		public async Task<List<ArticlesTypeMenuModel>> GetArticlesTypeMenu(string uid, int self)
+		{
+			string status = "1";
 
+			if (self == 1)
+			{
+				status = "0,1";
+			}
+
+			string sql = $"select t.ID, t.Name, Count(l.ID) as `Count` from TB_Article_Type t left join TB_Article_List l on t.ID=l.TypeID and l.Status in ({status})" +
+						" where t.UID = @in_uid and t.Status = 1" +
+						" group by t.ID order by t.Sort";
+
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String, size: 255);
+
+			return await SystemDB.QueryAsync<ArticlesTypeMenuModel>(str_conn, sql, _params);
+		}
 		public async Task<List<ArticleListModel>> GetArticleList(string uid, bool all)
 		{
 			string sql = $"select * from TB_Article_List where UID=@in_uid and Status=1 order by Title";
@@ -36,7 +53,7 @@ namespace BlogAPI.DB.BlogDB
 		}
 		public async Task<List<ArticleInfoListModel>> GetIndexList(string uid, int self)
 		{
-			string sql = "select l.ID, l.Title, l.Description, l.TypeID, l.CreateDate, t.Name as TypeName, ai.Name as UserName from TB_Article_List l join TB_Article_Type t on l.TypeID=t.ID" +
+			string sql = "select l.ID, l.Title, l.Description, l.TypeID, l.Status, l.CreateDate, t.Name as TypeName, ai.Name as UserName from TB_Article_List l join TB_Article_Type t on l.TypeID=t.ID" +
 						" join TB_Org_Account_Info ai on l.UID=ai.UID" +
 						" where ai.UID=@in_uid " +
 						" and ai.Status=1 and ( @in_self=1 or l.Status=1 ) " +
