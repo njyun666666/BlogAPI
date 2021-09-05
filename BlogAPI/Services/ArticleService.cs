@@ -36,7 +36,7 @@ namespace BlogAPI.Services
 			}
 			else
 			{
-				settingModel = await db_Settings.GetAccountSetting(model.Account);
+				settingModel = await db_Settings.GetAccountSetting(model.Account, uid);
 			}
 
 			if (settingModel == null)

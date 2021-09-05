@@ -12,5 +12,6 @@ namespace BlogAPI.Services.IServices
 		public TokenModel TokenDecrypt(string token);
 		public Task<bool> TokenKeyCheck(TokenModel model);
 		public Task<bool> Check(string uid, string[] roles);
+		public Task<bool> CheckBlogEnabled(string uid, string account);
 	}
 }

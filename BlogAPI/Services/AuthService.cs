@@ -89,5 +89,9 @@ namespace BlogAPI.Services
 		{
 			return await db_Auth.Check(uid, roles);
 		}
+		public async Task<bool> CheckBlogEnabled(string uid, string account)
+		{
+			return await db_Auth.CheckBlogEnabled(uid, account);
+		}
 	}
 }

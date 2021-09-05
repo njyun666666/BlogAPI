@@ -30,7 +30,12 @@ namespace BlogAPI.Controllers
 			}
 			return StatusCode(403);
 		}
-
+		[HttpPost]
+		[TypeFilter(typeof(BlogEnabledFilter))]
+		public async Task<IActionResult> CheckBlogEnabled(BlogEnabledModel model)
+		{
+			return Ok();
+		}
 
 	}
 }

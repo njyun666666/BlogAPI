@@ -16,6 +16,6 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 		public Task<int> ArticleTypeDelete(string uid, Int64 id);
 		public Task<int> ArticleTypeSortEdit(string uid, List<int> ids);
 		public Task<BlogSettingModel> GetIndexDefault();
-		public Task<BlogSettingModel> GetAccountSetting(string account);
+		public Task<BlogSettingModel> GetAccountSetting(string account, string uid);
 	}
 }

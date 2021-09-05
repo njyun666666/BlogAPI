@@ -30,6 +30,18 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.QueryFirstOrDefaultAsync<bool>(str_conn, sql, _params);
 		}
+		public async Task<bool> CheckBlogEnabled(string uid, string account)
+		{
+			string sql = $"select exists (" +
+							" select 1 from TB_Org_Account_Info a join TB_Blog_Setting b on a.UID = b.UID join TB_Org_Role_User r on a.UID = r.UID" +
+							" where a.Account = @in_account and a.Status = 1 and (b.UID = @in_uid or b.Status = 1)  and r.ID = 'Blogger' and r.Status = 1" +
+						 " )";
 
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
+			_params.Add("@in_account", account, DbType.String);
+
+			return await SystemDB.QueryFirstOrDefaultAsync<bool>(str_conn, sql, _params);
+		}
 	}
 }

@@ -8,5 +8,6 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 	public interface IBlogDB_Auth
 	{
 		public Task<bool> Check(string uid, string[] roles);
+		public Task<bool> CheckBlogEnabled(string uid, string account);
 	}
 }

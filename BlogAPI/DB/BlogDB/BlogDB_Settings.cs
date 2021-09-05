@@ -215,13 +215,14 @@ namespace BlogAPI.DB.BlogDB
 			return await SystemDB.QueryFirstOrDefaultAsync<BlogSettingModel>(str_conn, sql);
 		}
 
-		public async Task<BlogSettingModel> GetAccountSetting(string account)
+		public async Task<BlogSettingModel> GetAccountSetting(string account, string uid)
 		{
 			string sql = "select s.UID, s.Title from TB_Org_Account_Info i join TB_Blog_Setting s on i.UID=s.UID" +
-						 " where i.Account=@in_account and i.Status=1 and s.Status=1 limit 1";
+						 " where i.Account=@in_account and i.Status=1 and ( i.UID=@in_uid or s.Status=1 )  limit 1";
 
 			DynamicParameters _params = new DynamicParameters();
-			_params.Add("@in_account", account, DbType.String, size: 255);
+			_params.Add("@in_account", account, DbType.String);
+			_params.Add("@in_uid", uid, DbType.String);
 
 			return await SystemDB.QueryFirstOrDefaultAsync<BlogSettingModel>(str_conn, sql, _params);
 		}
