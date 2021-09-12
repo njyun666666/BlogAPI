@@ -34,10 +34,15 @@ namespace BlogAPI.Controllers
 			}
 
 		}
+		[HttpPost]
 		public async Task<IActionResult> GetIndexList([FromHeader] string UID, ArticleListRequestModel model)
 		{
 			return Ok(await _articleService.GetIndexList(UID, model));
 		}
-
+		[HttpPost]
+		public async Task<IActionResult> GetArticle([FromHeader]string UID, ArticleRequestModel model)
+		{
+			return Ok(await _articleService.GetArticle(UID, model));
+		}
 	}
 }

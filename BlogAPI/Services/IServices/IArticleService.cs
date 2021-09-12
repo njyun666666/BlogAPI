@@ -10,5 +10,6 @@ namespace BlogAPI.Services.IServices
 	{
 		public Task<Int64> AddArticle(string uid, ArticleListModel model);
 		public Task<List<ArticleInfoListModel>> GetIndexList(string uid, ArticleListRequestModel model);
+		public Task<ArticleInfoListModel> GetArticle(string uid, ArticleRequestModel model);
 	}
 }

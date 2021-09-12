@@ -12,5 +12,6 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 		public Task<List<ArticleListModel>> GetArticleList(string uid, bool all);
 		public Task<List<ArticleInfoListModel>> GetIndexList(string uid, int self);
 		public Task<Int64> AddArticle(string uid, ArticleListModel model);
+		public Task<ArticleInfoListModel> GetArticle(string uid, Int64 id, int self);
 	}
 }

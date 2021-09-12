@@ -13,10 +13,12 @@ namespace BlogAPI.Services
 	{
 		IBlogDB_Article db_Article;
 		IBlogDB_Settings db_Settings;
-		public ArticleService(IBlogDB_Article blogDB_Article, IBlogDB_Settings blogDB_Settings)
+		ISettingsService _settingsService;
+		public ArticleService(IBlogDB_Article blogDB_Article, IBlogDB_Settings blogDB_Settings, ISettingsService settingsService)
 		{
 			db_Article = blogDB_Article;
 			db_Settings = blogDB_Settings;
+			_settingsService = settingsService;
 		}
 
 		public async Task<Int64> AddArticle(string uid, ArticleListModel model)
@@ -25,33 +27,13 @@ namespace BlogAPI.Services
 		}
 		public async Task<List<ArticleInfoListModel>> GetIndexList(string uid, ArticleListRequestModel model)
 		{
-			int self = 0;
-
-			BlogSettingModel settingModel;
-			string targetUID;
-
-			if (string.IsNullOrWhiteSpace(model.Account) || model.Account == "i")
-			{
-				settingModel = await db_Settings.GetIndexDefault();
-			}
-			else
-			{
-				settingModel = await db_Settings.GetAccountSetting(model.Account, uid);
-			}
-
-			if (settingModel == null)
-			{
-				return null;
-			}
-
-			targetUID = settingModel.UID;
-
-			if (uid == targetUID)
-			{
-				self = 1;
-			}
-
-			return await db_Article.GetIndexList(targetUID, self);
+			BlogSettingAccModel settingModel = await _settingsService.GetSetting(uid, model.Account);
+			return await db_Article.GetIndexList(settingModel.Setting.UID, settingModel.Self);
+		}
+		public async Task<ArticleInfoListModel> GetArticle(string uid, ArticleRequestModel model)
+		{
+			BlogSettingAccModel settingModel = await _settingsService.GetSetting(uid, model.Account);
+			return await db_Article.GetArticle(settingModel.Setting.UID, model.ID, settingModel.Self);
 		}
 
 	}

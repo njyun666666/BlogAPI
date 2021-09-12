@@ -19,4 +19,9 @@ namespace BlogAPI.Models.Settings
 		[JsonIgnore]
 		public Int16 IndexDefault { get; set; }
 	}
+	public class BlogSettingAccModel
+	{
+		public BlogSettingModel Setting { get; set; }
+		public int Self { get; set; }
+	}
 }

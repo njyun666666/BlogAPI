@@ -46,5 +46,30 @@ namespace BlogAPI.Services
 		{
 			return await db_Settings.ArticleTypeSortEdit(uid, ids);
 		}
+		public async Task<BlogSettingAccModel> GetSetting(string uid, string account)
+		{
+			BlogSettingAccModel result = new BlogSettingAccModel();
+
+			if (string.IsNullOrWhiteSpace(account) || account == "i")
+			{
+				result.Setting = await db_Settings.GetIndexDefault();
+			}
+			else
+			{
+				result.Setting = await db_Settings.GetAccountSetting(account, uid);
+			}
+
+			if (result == null)
+			{
+				return null;
+			}
+
+			if (uid == result.Setting.UID)
+			{
+				result.Self = 1;
+			}
+
+			return result;
+		}
 	}
 }

@@ -84,8 +84,22 @@ namespace BlogAPI.DB.BlogDB
 			_params.Add("@in_status", model.Status, DbType.String);
 
 			return await SystemDB.ExecuteScalarAsync<Int64>(str_conn, sql, _params);
+		}
+		public async Task<ArticleInfoListModel> GetArticle(string uid, Int64 id, int self)
+		{
+			string sql = "select l.ID, l.Title, l.Content,  l.Status, l.TypeID, l.CreateDate, t.Name as TypeName, ai.Name as UserName " +
+						" from TB_Article_List l join TB_Article_Type t on l.TypeID = t.ID" +
+						" join TB_Org_Account_Info ai on l.UID = ai.UID" +
+						" where l.ID = @in_id and ai.UID = @in_uid " +
+						" and ai.Status = 1 and( @in_self = 1 or l.Status = 1) ";
+
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
+			_params.Add("@in_id", id, DbType.Int64);
+			_params.Add("@in_self", self, DbType.Int32);
+
+			return await SystemDB.QueryFirstOrDefaultAsync<ArticleInfoListModel>(str_conn, sql, _params);
 
 		}
-
 	}
 }
