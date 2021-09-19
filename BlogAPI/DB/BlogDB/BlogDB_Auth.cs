@@ -43,5 +43,22 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.QueryFirstOrDefaultAsync<bool>(str_conn, sql, _params);
 		}
+		public async Task<bool> CheckArticleEnabled(string uid, string account, Int64 articleID, int self)
+		{
+			string sql = $"select exists (" +
+							" select 1 from TB_Article_List l " +
+							" join TB_Org_Account_Info ai on l.UID = ai.UID" +
+							" where l.ID = @in_articleID and ai.UID = @in_uid " +
+							" and ai.Status = 1 and ( @in_self = 1 or l.Status = 1)" +
+						 " )";
+
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
+			_params.Add("@in_account", account, DbType.String);
+			_params.Add("@in_articleID", articleID, DbType.Int64);
+			_params.Add("@in_self", self, DbType.Int32);
+
+			return await SystemDB.QueryFirstOrDefaultAsync<bool>(str_conn, sql, _params);
+		}
 	}
 }

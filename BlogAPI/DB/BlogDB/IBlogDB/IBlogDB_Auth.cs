@@ -9,5 +9,6 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 	{
 		public Task<bool> Check(string uid, string[] roles);
 		public Task<bool> CheckBlogEnabled(string uid, string account);
+		public Task<bool> CheckArticleEnabled(string uid, string account, Int64 articleID, int self);
 	}
 }

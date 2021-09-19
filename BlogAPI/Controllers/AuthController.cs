@@ -1,4 +1,5 @@
 ﻿using BlogAPI.Filters;
+using BlogAPI.Models.Article;
 using BlogAPI.Models.Auth;
 using BlogAPI.Services.IServices;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,12 @@ namespace BlogAPI.Controllers
 		[HttpPost]
 		[TypeFilter(typeof(BlogEnabledFilter))]
 		public async Task<IActionResult> CheckBlogEnabled(BlogEnabledModel model)
+		{
+			return Ok();
+		}
+		[HttpPost]
+		[TypeFilter(typeof(ArticleEnabledFilter))]
+		public async Task<IActionResult> CheckArticleEnabled(ArticleEnabledModel model)
 		{
 			return Ok();
 		}

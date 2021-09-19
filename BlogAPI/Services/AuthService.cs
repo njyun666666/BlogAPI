@@ -1,6 +1,7 @@
 ﻿using BlogAPI.Common;
 using BlogAPI.DB.BlogDB.IBlogDB;
 using BlogAPI.Models;
+using BlogAPI.Models.Settings;
 using BlogAPI.Services.IServices;
 using System;
 using System.Collections.Generic;
@@ -14,14 +15,16 @@ namespace BlogAPI.Services
 	{
 		private readonly IMyService _myService;
 		private IGoogleLoginService _googleLoginService;
+		private ISettingsService _settingsService;
 		private IBlogDB_Login db_Login;
 		private IBlogDB_Auth db_Auth;
 
 
-		public AuthService(IMyService myService, IGoogleLoginService googleLoginService, IBlogDB_Login blogDB_Login, IBlogDB_Auth blogDB_Auth)
+		public AuthService(IMyService myService, IGoogleLoginService googleLoginService, IBlogDB_Login blogDB_Login, IBlogDB_Auth blogDB_Auth, ISettingsService settingsService)
 		{
 			_myService = myService;
 			_googleLoginService = googleLoginService;
+			_settingsService = settingsService;
 			db_Login = blogDB_Login;
 			db_Auth = blogDB_Auth;
 		}
@@ -92,6 +95,11 @@ namespace BlogAPI.Services
 		public async Task<bool> CheckBlogEnabled(string uid, string account)
 		{
 			return await db_Auth.CheckBlogEnabled(uid, account);
+		}
+		public async Task<bool> CheckArticleEnabled(string uid, string account, Int64 articleID)
+		{
+			BlogSettingAccModel model = await _settingsService.GetSetting(uid, account);
+			return await db_Auth.CheckArticleEnabled(model.Setting.UID, account, articleID, model.Self);
 		}
 	}
 }
