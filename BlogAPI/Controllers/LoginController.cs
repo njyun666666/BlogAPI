@@ -1,5 +1,6 @@
 ﻿using BlogAPI.Filters;
 using BlogAPI.Models.Org;
+using BlogAPI.Models.Settings;
 using BlogAPI.Services.IServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,12 +18,14 @@ namespace BlogAPI.Controllers
 		private ILoginService _loginService;
 		private IGoogleLoginService _googleLoginService;
 		private IAuthService _authService;
+		private ISettingsService _settingsService;
 
-		public LoginController(ILoginService loginService, IGoogleLoginService googleLoginService, IAuthService authService)
+		public LoginController(ILoginService loginService, IGoogleLoginService googleLoginService, IAuthService authService, ISettingsService settingsService)
 		{
 			_loginService = loginService;
 			_googleLoginService = googleLoginService;
 			_authService = authService;
+			_settingsService = settingsService;
 		}
 
 		[HttpPost]
@@ -52,12 +55,15 @@ namespace BlogAPI.Controllers
 				// login log
 				int add = await _loginService.LoginLogAdd(account.UID, key, IP);
 
+				// IndexDefault
+				BlogSettingModel settingModel = await _settingsService.GetBlogSetting(account.UID);
+
 				if (add == 1)
 				{
 					return Ok(new
 					{
 						token = token,
-						account = account.Account
+						account = settingModel.IndexDefault == 1 ? "i" : account.Account
 					});
 				}
 

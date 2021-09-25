@@ -59,7 +59,7 @@ namespace BlogAPI.Services
 				result.Setting = await db_Settings.GetAccountSetting(account, uid);
 			}
 
-			if (result == null)
+			if (result == null || result.Setting == null)
 			{
 				return null;
 			}
