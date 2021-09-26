@@ -31,7 +31,6 @@ namespace BlogAPI.Services
 
 		public string CreateToken(string uid, string tokenKey)
 		{
-			string gid = _googleLoginService.GetUser().Subject;
 			string iv = Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16);
 
 			TokenModel payload = new TokenModel()
@@ -42,7 +41,7 @@ namespace BlogAPI.Services
 
 			string json = JsonSerializer.Serialize(payload);
 			string payload_str = CommonTool.AESEncrypt(json, _myService.BlogAPI_Key(), iv);
-			string signature = CommonTool.ComputeHMACSHA256(uid + tokenKey + gid + iv, _myService.BlogAPI_Key());
+			string signature = CommonTool.ComputeHMACSHA256(payload_str, _myService.BlogAPI_Key());
 
 			return $"{iv}.{payload_str}.{signature}";
 		}
@@ -56,17 +55,10 @@ namespace BlogAPI.Services
 				string payload_str = token_arr[1];
 				string signature = token_arr[2];
 
-				if (_googleLoginService.GetUser() == null)
-				{
-					return null;
-				}
-
-				string gid = _googleLoginService.GetUser().Subject;
-
 				string payload_decrypt = CommonTool.AESDecrypt(payload_str, _myService.BlogAPI_Key(), iv);
 				TokenModel payload = JsonSerializer.Deserialize<TokenModel>(payload_decrypt);
 
-				string _signature = CommonTool.ComputeHMACSHA256(payload.UID + payload.TokenKey + gid + iv, _myService.BlogAPI_Key());
+				string _signature = CommonTool.ComputeHMACSHA256(payload_str, _myService.BlogAPI_Key());
 
 				if (signature != _signature)
 				{
