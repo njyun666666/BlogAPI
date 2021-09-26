@@ -23,7 +23,18 @@ namespace BlogAPI.Services
 
 		public async Task<Int64> AddArticle(string uid, ArticleListModel model)
 		{
-			return await db_Article.AddArticle(uid, model);
+			Int64 result = 0;
+
+			if (!model.ID.HasValue)
+			{
+				result = await db_Article.AddArticle(uid, model);
+			}
+			else
+			{
+				result = await db_Article.EditArticle(uid, model);
+			}
+
+			return result;
 		}
 		public async Task<List<ArticleInfoListModel>> GetIndexList(string uid, ArticleListRequestModel model)
 		{
@@ -32,8 +43,27 @@ namespace BlogAPI.Services
 		}
 		public async Task<ArticleInfoListModel> GetArticle(string uid, ArticleRequestModel model)
 		{
-			BlogSettingAccModel settingModel = await _settingsService.GetSetting(uid, model.Account);
-			return await db_Article.GetArticle(settingModel.Setting.UID, model.ID, settingModel.Self);
+			ArticleInfoListModel article = await db_Article.GetArticle(model.ID);
+
+			if (article.UID == uid)
+			{
+				article.isSelf = 1;
+			}
+			else
+			{
+				if (article.Status != 1)
+				{
+					article = null;
+				}
+			}
+
+			BlogSettingModel settingModel = await _settingsService.GetBlogSetting(article.UID);
+			if (settingModel.Status != 1)
+			{
+				article = null;
+			}
+
+			return article;
 		}
 
 	}

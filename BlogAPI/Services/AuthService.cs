@@ -91,7 +91,11 @@ namespace BlogAPI.Services
 		public async Task<bool> CheckArticleEnabled(string uid, string account, Int64 articleID)
 		{
 			BlogSettingAccModel model = await _settingsService.GetSetting(uid, account);
-			return await db_Auth.CheckArticleEnabled(model.Setting.UID, account, articleID, model.Self);
+			return await db_Auth.CheckArticleEnabled(model.Setting.UID, articleID, model.Self);
+		}
+		public async Task<bool> ArticleEditAuth(string uid, Int64 articleID)
+		{
+			return await db_Auth.ArticleEditAuth(uid, articleID);
 		}
 	}
 }

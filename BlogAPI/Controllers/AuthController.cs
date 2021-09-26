@@ -43,6 +43,13 @@ namespace BlogAPI.Controllers
 		{
 			return Ok();
 		}
+		[HttpPost]
+		[TypeFilter(typeof(AuthFilter), Arguments = new object[] { "Blogger" })]
+		[TypeFilter(typeof(ArticleEditAuthFilter))]
+		public async Task<IActionResult> ArticleEditAuth([FromHeader] string UID, ArticleEditAuthModel model)
+		{
+			return Ok();
+		}
 
 	}
 }

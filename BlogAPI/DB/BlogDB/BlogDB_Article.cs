@@ -85,21 +85,43 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.ExecuteScalarAsync<Int64>(str_conn, sql, _params);
 		}
-		public async Task<ArticleInfoListModel> GetArticle(string uid, Int64 id, int self)
+		public async Task<Int64> EditArticle(string uid, ArticleListModel model)
 		{
-			string sql = "select l.ID, l.Title, l.Content,  l.Status, l.TypeID, l.CreateDate, t.Name as TypeName, ai.Name as UserName " +
-						" from TB_Article_List l join TB_Article_Type t on l.TypeID = t.ID" +
-						" join TB_Org_Account_Info ai on l.UID = ai.UID" +
-						" where l.ID = @in_id and ai.UID = @in_uid " +
-						" and ai.Status = 1 and( @in_self = 1 or l.Status = 1) ";
+			string sql = " UPDATE `TB_Article_List`" +
+					     " SET" +
+						 " `Title` = @in_title," +
+						 " `Content` = @in_content," +
+						 " `Description` = @in_description," +
+						 " `TypeID` = @in_typeID," +
+						 " `Status` = @in_status," +
+						 " `UpdateDate` = now()" +
+						 "  WHERE `ID` = @in_id and `UID`= @in_uid ;";
+
 
 			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_id", model.ID, DbType.Int64);
 			_params.Add("@in_uid", uid, DbType.String);
+			_params.Add("@in_title", model.Title, DbType.String);
+			_params.Add("@in_content", model.Content, DbType.String);
+			_params.Add("@in_description", model.Description, DbType.String);
+			_params.Add("@in_typeID", model.TypeID, DbType.String);
+			_params.Add("@in_status", model.Status, DbType.String);
+
+			await SystemDB.ExecuteScalarAsync<Int64>(str_conn, sql, _params);
+
+			return model.ID.Value;
+		}
+		public async Task<ArticleInfoListModel> GetArticle(Int64 id)
+		{
+			string sql = "select l.ID, l.Title, l.Content,  l.Status, l.TypeID, l.UID, l.CreateDate, t.Name as TypeName, ai.Name as UserName"+
+						" from TB_Article_List l join TB_Article_Type t on l.TypeID = t.ID" +
+						" join TB_Org_Account_Info ai on l.UID = ai.UID" +
+						" where l.ID = @in_id";
+
+			DynamicParameters _params = new DynamicParameters();
 			_params.Add("@in_id", id, DbType.Int64);
-			_params.Add("@in_self", self, DbType.Int32);
 
 			return await SystemDB.QueryFirstOrDefaultAsync<ArticleInfoListModel>(str_conn, sql, _params);
-
 		}
 	}
 }

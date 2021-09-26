@@ -14,5 +14,6 @@ namespace BlogAPI.Services.IServices
 		public Task<bool> Check(string uid, string[] roles);
 		public Task<bool> CheckBlogEnabled(string uid, string account);
 		public Task<bool> CheckArticleEnabled(string uid, string account, Int64 articleID);
+		public Task<bool> ArticleEditAuth(string uid, Int64 articleID);
 	}
 }
