@@ -13,6 +13,7 @@ namespace BlogAPI.Common
         public Int64 FileUploadSizeLimit_byte();
         public string FileUploadPath();
         public string FileSite();
+        public string AppsettingName();
     }
     public class MyService : IMyService
     {
@@ -42,5 +43,9 @@ namespace BlogAPI.Common
 		{
             return _config["FileSite"];
         }
+        public string AppsettingName()
+		{
+            return _config["AppsettingName"];
+		}
     }
 }

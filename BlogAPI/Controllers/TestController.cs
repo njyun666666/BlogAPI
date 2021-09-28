@@ -1,4 +1,5 @@
-﻿using BlogAPI.DB.BlogDB;
+﻿using BlogAPI.Common;
+using BlogAPI.DB.BlogDB;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -12,14 +13,20 @@ namespace BlogAPI.Controllers
 	[ApiController]
 	public class TestController : ControllerBase
 	{
+		IMyService _myservice;
 		IDB_Test _dB_Test;
-		public TestController(IDB_Test dB_Test)
+		public TestController(IDB_Test dB_Test, IMyService myService)
 		{
+			_myservice = myService;
 			_dB_Test = dB_Test;
 		}
 		public async Task<IActionResult> Get()
 		{
-			return Ok(new { BlogDB = await _dB_Test.BlogDBTest() });
+			return Ok(new
+			{
+				appsettingName = _myservice.AppsettingName(),
+				blogDB = await _dB_Test.BlogDBTest()
+			});
 		}
 	}
 }
