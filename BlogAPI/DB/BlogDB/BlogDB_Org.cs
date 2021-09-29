@@ -45,7 +45,16 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
 		}
+		public async Task<int> SetDefaultRole(string uid)
+		{
+			string sql = "INSERT INTO `TB_Org_Role_User` (`ID`,`UID`,`Status`,`UpdateDate`,`Editor`)" +
+						" select `ID`, @in_uid, 1 ,now(), 'default' from `TB_Org_Role` where `Status`= 1 and `Default`= 1";
 
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
+
+			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
+		}
 
 	}
 }

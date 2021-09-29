@@ -10,5 +10,6 @@ namespace BlogAPI.DB.BlogDB.IBlogDB
 	{
 		public Task<OrgAccountInfoModel> AccountInfoGet(string googleID);
 		public Task<int> AccountInfoAdd(string uid, string gid, string name, string email, string account, Int16 status);
+		public Task<int> SetDefaultRole(string uid);
 	}
 }

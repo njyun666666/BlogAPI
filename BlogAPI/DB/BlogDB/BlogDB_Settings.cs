@@ -46,6 +46,17 @@ namespace BlogAPI.DB.BlogDB
 
 			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
 		}
+		public async Task<int> InsertNewBlogger(string uid, string account)
+		{
+			string sql = "INSERT INTO `TB_Blog_Setting` (`UID`,`Title`,`Status`,`UpdateDate`,`Editor`,`IndexDefault`)" +
+						" VALUES(@in_uid, @in_title, (select count(1) from TB_Org_Role_User where ID = 'Blogger' and UID = @in_uid) , now(), 'system', 0); ";
+			
+			DynamicParameters _params = new DynamicParameters();
+			_params.Add("@in_uid", uid, DbType.String);
+			_params.Add("@in_title", $"{account} Blog", DbType.String);
+
+			return await SystemDB.ExecuteAsync(str_conn, sql, _params);
+		}
 		#endregion
 		#region 文章類型
 		public async Task<List<ArticleTypeModel>> ArticleTypeGet(string uid)

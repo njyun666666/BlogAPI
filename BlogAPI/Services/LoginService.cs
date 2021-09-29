@@ -13,12 +13,14 @@ namespace BlogAPI.Services
 	{
 		private IBlogDB_Org db_Org;
 		private IBlogDB_Login db_Login;
+		private IBlogDB_Settings db_Settings;
 
 
-		public LoginService(IBlogDB_Org blogDB_Org, IBlogDB_Login blogDB_Login)
+		public LoginService(IBlogDB_Org blogDB_Org, IBlogDB_Login blogDB_Login, IBlogDB_Settings blogDB_Settings)
 		{
 			db_Org = blogDB_Org;
 			db_Login = blogDB_Login;
+			db_Settings = blogDB_Settings;
 		}
 
 		public async Task<OrgAccountInfoModel> AccountInfoGet(string googleID)
@@ -35,6 +37,11 @@ namespace BlogAPI.Services
 
 			if (result > 0)
 			{
+				// 新增預設角色
+				await db_Org.SetDefaultRole(uid);
+
+				await db_Settings.InsertNewBlogger(uid, account);
+
 				return new OrgAccountInfoModel()
 				{
 					UID = uid,

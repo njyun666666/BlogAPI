@@ -63,7 +63,7 @@ namespace BlogAPI.Controllers
 					return Ok(new
 					{
 						token = token,
-						account = settingModel.IndexDefault == 1 ? "i" : account.Account
+						account = settingModel != null && settingModel.IndexDefault == 1 ? "i" : account.Account
 					});
 				}
 
