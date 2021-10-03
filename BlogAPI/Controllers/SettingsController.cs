@@ -61,9 +61,9 @@ namespace BlogAPI.Controllers
 
 			int id = await _settingService.ArticleTypeAdd(UID, model.Name);
 
-			if (id == 0)
+			if (id < 1)
 			{
-				return Ok(new FailReturn());
+				return Ok(new ReturnModel(id));
 			}
 
 			return Ok(new OkReturn(id));
