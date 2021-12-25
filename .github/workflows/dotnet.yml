@@ -38,7 +38,7 @@ jobs:
     - name: Uncompress new Files
       run : sudo ssh -i opensshkey -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_HOST }} 'cd /var/www/BlogAPI/www && sudo tar -xzvf app.tar.gz && sudo rm app.tar.gz'
     - name: copy appsetting
-      run : sudo ssh -i opensshkey -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_HOST }} 'sudo cp /var/www/BlogAPI/appsettings.Production.json /var/www/BlogAPI/www/appsettings.Prodcution.json'
+      run : sudo ssh -i opensshkey -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_HOST }} 'sudo cp /var/www/BlogAPI/appsettings.Production.json /var/www/BlogAPI/www/appsettings.Production.json'
     - name: change file group
       run : sudo ssh -i opensshkey -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_HOST }} 'sudo chgrp -R www-data /var/www/BlogAPI/www/'
     - name: restart service
