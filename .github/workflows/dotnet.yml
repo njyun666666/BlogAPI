@@ -28,7 +28,7 @@ jobs:
     - name: Create opensshkey 
       run : sudo echo '${{ secrets.GCP_VM_SSH }}' > opensshkey
     - name: Delete Existing Files
-      run : sudo ssh -i opensshkey -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_HOST }} 'sudo rm -rf /var/www/BlogAPI/www/*'
+      run : sudo ssh -i opensshkey -o StrictHostKeyChecking=no ${{ secrets.GCP_VM_USER }}@${{ secrets.GCP_VM_HOST }} 'sudo rm -rf /var/www/BlogAPI/www/* && sudo chmod 775 /var/www/BlogAPI/www'
     - name: Compress and Copy New Files to server
       run : |
             cd app
